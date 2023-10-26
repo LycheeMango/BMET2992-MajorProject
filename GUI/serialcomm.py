@@ -44,61 +44,56 @@ class SerialReader:
         except Exception as a:
             print ("error open serial port: " + str(a))
 
-        if ser.isOpen():
-            print("**************************************")
-            print("** Serial port opened: {}".format(self.comport))
-            print("**************************************")
-            try:
-                ser.flushInput() #flush input buffer, discarding all its contents
-                ser.flushOutput()#flush output buffer, aborting current output
-                                #and discard all that is in buffer
+        
+        while self.looprun == 1 and self.reading_flag:
 
-                while self.looprun == 1 and self.reading_flag:
 
-                    if ser.in_waiting > 0:
-                        data = ser.readline().decode().strip()
+            if ser.isOpen():
+                print("**************************************")
+                print("** Serial port opened: {}".format(self.comport))
+                print("**************************************")
 
-                        if data.startswith("Packet Sequence:"):
-                            sequence = data[len("Packet Sequence:"):]
-                            # print("Packet Sequence:", sequence)
-                            line = "Packet Sequence: " + sequence
-                            print(line)
-                        elif data.startswith("BPM:"):
-                            bpm_data = data[len("BPM:"):]
-                            # print("BPM:", bpm_data)
-                            line = "BPM: " + bpm_data
-                            print(line)
-                        elif data.startswith("RAW:"):
-                            sensor_data = data[len("RAW:"):]
-                            print("Raw Sensor Data:", sensor_data)
-                            line = "Raw Sensor Data: " + sensor_data
-                            print(line)
+                if ser.in_waiting > 0:
+                    data = ser.readline().decode().strip()
 
-                            # Also save the data into a csv file
-                            raw_values = [int(value) for value in sensor_data.split(",")]
-                            with open(self.csvfilepath, "w", newline="") as csvfile:
-                                csv_writer = csv.writer(csvfile)
-                                for raw_value in raw_values:
-                                    csv_writer.writerow([sequence, raw_value])
+                    if data.startswith("Packet Sequence:"):
+                        sequence = data[len("Packet Sequence:"):]
+                        # print("Packet Sequence:", sequence)
+                        line = "Packet Sequence: " + sequence
+                        print(line)
+                    elif data.startswith("BPM:"):
+                        bpm_data = data[len("BPM:"):]
+                        # print("BPM:", bpm_data)
+                        line = "BPM: " + bpm_data
+                        print(line)
+                    elif data.startswith("RAW:"):
+                        sensor_data = data[len("RAW:"):]
+                        print("Raw Sensor Data:", sensor_data)
+                        line = "Raw Sensor Data: " + sensor_data
+                        print(line)
+
+                    # Also save the data into a csv file
+                        raw_values = [int(value) for value in sensor_data.split(",")]
+                        with open(self.csvfilepath, "w", newline="") as csvfile:
+                            csv_writer = csv.writer(csvfile)
+                            for raw_value in raw_values:
+                                csv_writer.writerow([sequence, raw_value])
 
 
                         # line = data
-                        file_log = open(self.pathfilelog, "a")
-                        file_log.writelines(line+"\n") # write/append new data from serial port to file
+                    file_log = open(self.pathfilelog, "a")
+                    file_log.writelines(line+"\n") # write/append new data from serial port to file
 
                         # print(line) #write data to output 
-                        file_log.close()
-                    else:
-                        ser.close()
+                    file_log.close()
+                else:
+                    ser.close()
 
-            except Exception as a:
-                print ("error open serial port: " + str(a))
-
-        else:
-            print("Serial port disconnected. Attempting to reconnect.......")
-            try:
-                ser.open()
-            except Exception as a:
-                print ("error open serial port: " + str(a))
-            time.sleep(1)
+            else:
+                print("Serial port disconnected. Attempting to reconnect.......")
+                try:
+                    ser.open()
+                except Exception as a:
+                    print ("error open serial port: " + str(a))
+                time.sleep(1)
 
