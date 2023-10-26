@@ -102,13 +102,3 @@ class SerialReader:
                 print ("error open serial port: " + str(a))
             time.sleep(1)
 
-        # #  else: is equivilant of if not ser.is_open:
-        # else:
-        #     while self.looprun == 1: #continuously runs this loop if no comport connection
-        #         print("Serial port disconnected. Attempting to reconnect......")
-        #         try: #tries to establish connection
-        #             ser.open()
-        #         except Exception as a:
-        #             print ("error open serial port: " + str(a))
-        #         time.sleep(1) # allows for 1 second delay before trying again
-
