@@ -15,24 +15,24 @@ class SerialReader:
         self.reading_flag = False
         self.looprun = 0
 
-    def open_serial_port(self):
-        serial_port = serial.Serial()
-        serial_port.port = self.comport
-        serial_port.baudrate = self.baudrate
-        serial_port.timeout = 10  # 10 seconds?
-        serial_port.stopbits = serial.STOPBITS_ONE
+    # def open_serial_port(self):
+    #     serial_port = serial.Serial()
+    #     serial_port.port = self.comport
+    #     serial_port.baudrate = self.baudrate
+    #     serial_port.timeout = 10  # 10 seconds?
+    #     serial_port.stopbits = serial.STOPBITS_ONE
 
-        try:
-            serial_port.open()
-            if serial.Serial.isOpen():
-                print("**************************************")
-                print("** Serial port opened: {}".format(self.comport))
-                print("**************************************")
-            return serial_port
+    #     try:
+    #         serial_port.open()
+    #         if serial.Serial.isOpen():
+    #             print("**************************************")
+    #             print("** Serial port opened: {}".format(self.comport))
+    #             print("**************************************")
+    #         return serial_port
         
-        except:
-            print("Port open failed: " + self.comport)
-            return None
+    #     except:
+    #         print("Port open failed: " + self.comport)
+    #         return None
 
     def read_serial(self):
         self.reading_flag = True
@@ -47,7 +47,7 @@ class SerialReader:
             ser = serial.Serial(self.comport,self.baudrate)
             print('Succesful Connected to Serial Port COM:'+self.comport+'  Baudrate:'+self.baudrate)
         except Exception as a:
-            print ("error open serial port: " + str(a))
+            print ("error open serial port 1: " + str(a))
 
         
         while self.looprun == 1 and self.reading_flag:
@@ -95,9 +95,13 @@ class SerialReader:
 
             else:
                 # print("Serial port disconnected. Attempting to reconnect.......")
+
+
                 try:
                     ser.open()
+                        
                 except Exception as a:
-                    print ("error open serial port: " + str(a))
+                    # print ("error open serial port 2: " + str(a))
+                    print("Serial port disconnected. Attempting to reconnect.......")
                 time.sleep(1)
 
