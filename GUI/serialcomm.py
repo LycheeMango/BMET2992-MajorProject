@@ -24,7 +24,12 @@ class SerialReader:
 
         try:
             serial_port.open()
+            if serial.Serial.isOpen():
+                print("**************************************")
+                print("** Serial port opened: {}".format(self.comport))
+                print("**************************************")
             return serial_port
+        
         except:
             print("Port open failed: " + self.comport)
             return None
@@ -49,9 +54,9 @@ class SerialReader:
 
 
             if ser.isOpen():
-                print("**************************************")
-                print("** Serial port opened: {}".format(self.comport))
-                print("**************************************")
+                # print("**************************************")
+                # print("** Serial port opened: {}".format(self.comport))
+                # print("**************************************")
 
                 if ser.in_waiting > 0:
                     data = ser.readline().decode().strip()
@@ -90,7 +95,7 @@ class SerialReader:
                     ser.close()
 
             else:
-                print("Serial port disconnected. Attempting to reconnect.......")
+                # print("Serial port disconnected. Attempting to reconnect.......")
                 try:
                     ser.open()
                 except Exception as a:
