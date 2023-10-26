@@ -112,7 +112,7 @@ class SerialGUI:
         parameter_serial_layout=[
                 [sg.Text('Step 1. Select a comport for serial connection:', text_color='Red', font=20)],
                 [sg.Text('COM port:'), sg.InputCombo(com,default_value='COM4',size=(15, 1), key ='-COMPORT-')], 
-                [sg.Text('Or Input PortName: '), sg.Input(key='-MACCOMPORT-', size=(9, 1)), sg.Button('Submit')],
+                [sg.Text('Or Input PortName: '), sg.InputText(key='-MACCOMPORT-', size=(9, 1), default_text='/dev/tty.ESP32XX0H32'), sg.Button('Submit')],
                 [sg.Text('Step 2. Enter Baudrate:', text_color='Red', font=20)],
                 [sg.Text('baud rate:'), sg.InputCombo(baud_rate,default_value='115200',size=(15, 1),key='-BAUDRATE-')],
                 [sg.Text('Step 3. Connect Bluetooth: ', text_color='red', font=20)], 
@@ -132,10 +132,6 @@ class SerialGUI:
             [sg.Text('CSV file path: ', font=20)],
             [sg.InputText(key='-CSVFilePath-', size=(9, 1), default_text='./tmp/sensor_data_tmp.csv'), sg.FileSaveAs(initial_folder='./tmp')]
         ]
-
-        # visual_alarm_holder=[[sg.Button('low pulse'), sg.Button('high pulse'), sg.Button('poor recording')]]
-
-        
 
         # Layout with LED indicators
         visual_alarm_holder = [
@@ -190,10 +186,10 @@ class SerialGUI:
         canvas = canvas_elem.TKCanvas
         # get the pulse data
         SAMPLE_TIME = 0.02
-        data_df = pd.read_csv('/Users/huangqiting/Documents/lab4Cp2/pulse.csv', header=None, names=['package_sequence', 'PPG'])
+        data_df = pd.read_csv('./test_data/pulse.csv', header=None, names=['package_sequence', 'PPG'])
         wave = data_df['PPG']
 
-        with open('/Users/huangqiting/Documents/lab4Cp2/pulse.csv') as csvDataFile:
+        with open('./test_data/pulse.csv') as csvDataFile:
             # read file as csv file
             csvReader = csv.reader(csvDataFile)
             wave = []
@@ -214,17 +210,13 @@ class SerialGUI:
         fig_agg = draw_figure(canvas, fig)
 
         # Create LEDs:
-        # led_canvas_1 = self.window['-low_pulse-']
-        # led1 = create_led(led_canvas_1, 0, 0, 20, 20, 'gray')
 
         for led_name, led_id in self.led_ids.items():
             led_canvas = self.window[f'-{led_name}-']
-            led_id = create_led(led_canvas, 0, 0, 19, 19, 'gray')
-
+            self.led_ids[led_name] = create_led(led_canvas, 0, 0, 19, 19, 'gray')
 
         while True:
             event, values = self.window.read()
-
 
             if event in (sg.WIN_CLOSED, 'Exit'):
                 printWithTimeTag("clicked exit.")
@@ -264,6 +256,7 @@ class SerialGUI:
                 file_log.writelines(output+"\n") # write/append new data from serial port to file
                 file_log.close()
             
+
             # detect led status and set leds:
 
             
