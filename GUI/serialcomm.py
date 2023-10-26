@@ -94,7 +94,6 @@ class SerialReader:
                     ser.close()
 
             else:
-                # print("Serial port disconnected. Attempting to reconnect.......")
 
 
                 try:
