@@ -78,7 +78,7 @@ class SerialReader:
 
                     # Also save the data into a csv file
                         raw_values = [int(value) for value in sensor_data.split(",")]
-                        with open(self.csvfilepath, "w", newline="") as csvfile:
+                        with open(self.csvfilepath, "a", newline="") as csvfile:
                             csv_writer = csv.writer(csvfile)
                             for raw_value in raw_values:
                                 csv_writer.writerow([sequence, raw_value])
