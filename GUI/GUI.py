@@ -140,6 +140,8 @@ class SerialGUI:
             [sg.Text('Poor Recording', size=(10, 1)), sg.Canvas(size=(20, 20), key='-poor_recording-')]
         ]
 
+        # BPM_display = [sg.Text('Current BPM:'), sg.Text('', size=(10, 1), key='-BPM-')] #!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
         clear_output = [
             [sg.Button('Clear Output', size=(30,1)), sg.Button('Save Output', size=(30,1))]]
 
