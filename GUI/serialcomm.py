@@ -88,18 +88,19 @@ class SerialReader:
 
                         # print(line) #write data to output 
                         file_log.close()
+                    else:
+                        ser.close()
 
             except Exception as a:
                 print ("error open serial port: " + str(a))
 
         else:
-            print("Serial port disconnected. Attempting to reconnect.")
-            ser.close()
+            print("Serial port disconnected. Attempting to reconnect.......")
             try:
-                ser = serial.Serial(self.comport,self.baudrate)
-                print('Succesful Connected to Serial Port COM:'+self.comport+'  Baudrate:'+self.baudrate)
+                ser.open()
             except Exception as a:
                 print ("error open serial port: " + str(a))
+            time.sleep(1)
 
         # #  else: is equivilant of if not ser.is_open:
         # else:
