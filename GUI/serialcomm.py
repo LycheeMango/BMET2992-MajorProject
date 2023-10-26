@@ -95,7 +95,6 @@ class SerialReader:
 
             else:
 
-
                 try:
                     ser.open()
                         
@@ -104,3 +103,7 @@ class SerialReader:
                     print("Serial port disconnected. Attempting to reconnect.......")
                 time.sleep(1)
 
+        # if ser.isOpen():
+        #         print("**************************************")
+        #         print("** Serial port opened: {}".format(self.comport))
+        #         print("**************************************")
