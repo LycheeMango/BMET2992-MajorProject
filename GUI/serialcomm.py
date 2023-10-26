@@ -47,7 +47,6 @@ class SerialReader:
         
         while self.looprun == 1 and self.reading_flag:
 
-
             if ser.isOpen():
                 print("**************************************")
                 print("** Serial port opened: {}".format(self.comport))
